@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: black;
+  color: white;
+}
+
+/* LOCK SCREEN */
+#lockscreen {
+  height: 100vh;
+  background: url('photo1.jpg') center/cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.time {
+  font-size: 50px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.notif {
+  background: rgba(0,0,0,0.6);
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* CHAT */
+#app {
+  display: none;
+  background: #0b141a;
+  height: 100vh;
+}
+
+.header {
+  background: #202c33;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.dp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.chat {
+  padding: 10px;
+  height: 75vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.msg {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.sent {
+  background: #005c4b;
+  align-self: flex-end;
+}
+
+.received {
+  background: #202c33;
+  align-self: flex-start;
+}
+
+.msg img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* VOICE */
+.voice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.play {
+  width: 30px;
+  height: 30px;
+  background: white;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* TICKS */
+.ticks {
+  font-size: 10px;
+  text-align: right;
+}
+
+.input {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #202c33;
+  padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lockscreen">
+  <div class="time" id="time"></div>
+
+  <div class="notif" onclick="openChat()">
+    <b id="namePreview"></b><br>
+    💬 New message
+  </div>
+</div>
+
+<!-- CHAT -->
+<div id="app">
+  <div class="header">
+    <img id="dp" class="dp">
+    <div>
+      <div id="name"></div>
+      <small>online</small>
+    </div>
+  </div>
+
+  <div class="chat" id="chat"></div>
+  <div class="input">Type a message...</div>
+</div>
+
+<!-- AUDIO -->
+<audio id="music" loop>
+  <source src="song.mp3">
+</audio>
+
+<audio id="voiceAudio">
+  <source src="voice.mp3">
+</audio>
+
+<script>
+/* PERSONALIZE */
+let userName = "His Name ❤️";
+let dpImage = "photo1.jpg";
+
+document.getElementById("name").innerText = userName;
+document.getElementById("namePreview").innerText = userName;
+document.getElementById("dp").src = dpImage;
+
+/* TIME */
+function updateTime(){
+  let now = new Date();
+  let h = now.getHours();
+  let m = now.getMinutes();
+  if(m<10) m="0"+m;
+  document.getElementById("time").innerText = h + ":" + m;
+}
+setInterval(updateTime,1000);
+updateTime();
+
+/* OPEN CHAT */
+function openChat(){
+  document.getElementById("lockscreen").style.display="none";
+  document.getElementById("app").style.display="block";
+  document.getElementById("music").play();
+  startChat();
+}
+
+/* 💬 TAMIL + ENGLISH CHAT */
+
+
+let i=0;
+let chat=document.getElementById("chat");
+
+function showMessage(){
+  if(i>=messages.length) return;
+
+  let m=messages[i];
+  let div=document.createElement("div");
+  div.className="msg "+m.type;
+
+  if(m.text) div.innerText=m.text;
+
+  if(m.img){
+    let img=document.createElement("img");
+    img.src=m.img;
+    div.appendChild(img);
+  }let messages = [
+
+  {type:"received", text:"Hey 😊"},
+  {type:"sent", text:"Hey da..."},
+  {type:"received", text:"Enna panra?"},
+  {type:"sent", text:"Onnum illa... just lying... unna dhaan nenachitu iruken ❤️"},
+
+  {type:"received", text:"Ayyooo really ah 😄"},
+  {type:"sent", text:"Ama da... always 😌"},
+
+  {type:"received", text:"Seri seri drama pannadha 😂"},
+  {type:"sent", text:"Idhu drama illa... serious 😏"},
+
+  {type:"sent", text:"Unaku theriyuma..."},
+  {type:"received", text:"Enna?"},
+
+  {type:"sent", text:"Namma ipdi close aaguvom nu nenachaaye illa"},
+  {type:"received", text:"Same here... but I like this ❤️"},
+
+  {type:"sent", text:"Look at this..."},
+  {type:"sent", img:"photo1.jpg"},
+  {type:"sent", text:"Indha moment... romba special 🥺"},
+
+  {type:"received", text:"I remember this day..."},
+  {type:"received", text:"Appove nee enaku romba pidichirundha ❤️"},
+
+  {type:"sent", text:"Appove ah? 😏"},
+  {type:"received", text:"Shut up 😂"},
+
+  {type:"sent", text:"But seri..."},
+  {type:"sent", text:"Indha day la irundhu ippo varaikum..."},
+  {type:"sent", text:"Nee enaku romba important aayita"},
+
+  {type:"received", text:"Nee enaku important illa nu yosichiya? ❤️"},
+
+  {type:"sent", text:"Sometimes... naan proper ah show panna maaten..."},
+  {type:"received", text:"I know..."},
+
+  {type:"sent", text:"But I really care about you da"},
+  {type:"received", text:"Adhu enaku theriyum 🥺"},
+
+  {type:"sent", text:"Still... konjam bayam irukum..."},
+  {type:"received", text:"Bayam ah? enna bayam?"},
+
+  {type:"sent", text:"Nee oru naal enna vittu poiduva nu..."},
+  {type:"sent", text:"Even when nee sollra 'I won’t leave'..."},
+
+  {type:"received", text:"Hey loosu..."},
+  {type:"received", text:"Naan enga pogaren ❤️"},
+
+  {type:"received", img:"photo2.jpg"},
+  {type:"received", text:"Paathu sollu... naan un kitta ipdi dhaan iruken"},
+
+  {type:"sent", text:"Appo fight aagumbodhu 'let’s separate' nu solluva enna..."},
+  {type:"sent", text:"Adhu romba hurt aagudhu..."},
+
+  {type:"received", text:"I know da..."},
+  {type:"received", text:"Anger la solliduven... but adhu meaning illa"},
+  {type:"received", text:"I always come back to you la?"},
+
+  {type:"sent", text:"Ama... nee thirumba varuva 🥺"},
+  {type:"sent", text:"But andha moment la..."},
+  {type:"sent", text:"Naan already unna lose panniten nu feel aagudhu..."},
+
+  {type:"received", text:"Nee enna lose panna maata ❤️"},
+  {type:"received", text:"Naan unna thaan choose panren... every time"},
+
+  {type:"sent", text:"Namma ipdiye irukanum... please"},
+  {type:"received", text:"Irupom da ❤️"},
+
+  {type:"received", img:"photo3.jpg"},
+  {type:"received", text:"Unna naan ipdi dhaan paakren... always smiling 💖"},
+
+  {type:"sent", text:"Naan overthink pannuva..."},
+  {type:"sent", text:"Konjam bayapaduva..."},
+  {type:"sent", text:"But naan namma relationship la tired aaga maaten"},
+
+  {type:"received", text:"Adhaan naan unna love panren ❤️"},
+
+  {type:"received", text:"Namma perfect illa..."},
+  {type:"received", text:"But namma real"},
+
+  {type:"sent", text:"Namma fight pannuvom..."},
+  {type:"received", text:"But fix pannuvom"},
+
+  {type:"sent", text:"Misunderstand pannuvom..."},
+  {type:"received", text:"But thirumba seruvom"},
+
+  {type:"sent", text:"Hurt aaguvom..."},
+  {type:"received", text:"But leave panna maatom ❤️"},
+
+  {type:"sent", text:"Promise?"},
+
+  {type:"received", text:"Promise 🤝"},
+  {type:"received", text:"Edhu nadandhalum..."},
+
+  {type:"received", text:"Naan unna vida maaten"},
+  {type:"sent", text:"Naanum ❤️"},
+
+  {type:"sent", text:"Naan konjam trust improve pannuren..."},
+  {type:"received", text:"Naanum unna hurt panna try pannama iruken..."},
+
+  {type:"received", text:"Deal ah?"},
+  {type:"sent", text:"Deal ❤️"},
+
+  {type:"received", text:"And one more thing..."},
+  {type:"sent", text:"Enna?"},
+
+  /* 🎙️ VOICE */
+  {type:"received", voice:true},
+
+  {type:"received", text:"Edhu nadandhalum..."},
+  {type:"received", text:"Naan unna thaan choose panren ❤️"},
+
+  {type:"sent", text:"I LOVE YOU 💖"},
+  {type:"received", text:"I LOVE YOU FOREVER ❤️"}
+
+];
+
+  if(m.voice){
+    let voiceDiv = document.createElement("div");
+    voiceDiv.className = "voice";
+
+    let playBtn = document.createElement("div");
+    playBtn.className = "play";
+    playBtn.innerText = "▶";
+
+    let duration = document.createElement("div");
+    duration.innerText = "0:08";
+
+    voiceDiv.appendChild(playBtn);
+    voiceDiv.appendChild(duration);
+    div.appendChild(voiceDiv);
+
+    let audio = document.getElementById("voiceAudio");
+
+    playBtn.onclick = () => {
+      if(audio.paused){
+        audio.play();
+        playBtn.innerText = "⏸";
+      } else {
+        audio.pause();
+        playBtn.innerText = "▶";
+      }
+    };
+
+    audio.onended = () => {
+      playBtn.innerText = "▶";
+    };
+  }
+
+  if(m.type==="sent"){
+    let t=document.createElement("div");
+    t.className="ticks";
+    t.innerText="✔✔";
+    div.appendChild(t);
+  }
+
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+
+  i++;
+  setTimeout(showMessage,1500);
+}
+
+function startChat(){
+  setTimeout(showMessage,1000);
+}
+</script>
+
+</body>
+</html>
