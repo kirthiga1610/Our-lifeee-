@@ -3,399 +3,261 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You ❤️</title>
+<title>For Him ❤️</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: black;
-  color: white;
-}
+body{margin:0;font-family:Arial;background:black;color:white}
 
-/* LOCK SCREEN */
-#lockscreen {
-  height: 100vh;
-  background: url('photo1.jpg') center/cover;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
+/* LOCKSCREEN */
+#lockscreen{
+ height:100vh;
+ background:url('lock.jpg') center/cover no-repeat;
+ display:flex;flex-direction:column;justify-content:space-between;
+ padding:20px;
 }
-
-.time {
-  font-size: 50px;
-  text-align: center;
-  margin-top: 40px;
-}
-
-.notif {
-  background: rgba(0,0,0,0.6);
-  padding: 12px;
-  border-radius: 12px;
-  cursor: pointer;
-}
+.time{font-size:50px;text-align:center;margin-top:40px}
+.notif{background:rgba(0,0,0,0.6);padding:12px;border-radius:12px;cursor:pointer}
 
 /* CHAT */
-#app {
-  display: none;
-  background: #0b141a;
-  height: 100vh;
+#app{display:none;height:100vh}
+.header{background:#202c33;padding:12px;display:flex;align-items:center}
+.dp{width:40px;height:40px;border-radius:50%;margin-right:10px}
+
+.chat{
+ padding:10px;height:75vh;overflow-y:auto;
+ display:flex;flex-direction:column;gap:10px;
+ background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+ url('chatbg.jpg') center/cover;
 }
 
-.header {
-  background: #202c33;
-  padding: 12px;
-  display: flex;
-  align-items: center;
+.msg{max-width:70%;padding:10px;border-radius:10px;font-size:14px}
+.sent{background:#005c4b;align-self:flex-end}
+.received{background:#202c33;align-self:flex-start}
+
+.msg img{width:100%;border-radius:10px}
+
+/* typing */
+.typing{
+ background:#202c33;padding:10px;border-radius:10px;
+ width:60px;display:flex;justify-content:space-around;
+}
+.dot{width:6px;height:6px;background:white;border-radius:50%;
+ animation:blink 1.4s infinite}
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+
+@keyframes blink{
+ 0%,80%,100%{opacity:.2}
+ 40%{opacity:1}
 }
 
-.dp {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+/* ticks */
+.ticks{font-size:10px;text-align:right;color:gray}
+.blue{color:#4fc3f7}
+
+/* voice */
+.play{
+ width:30px;height:30px;background:white;color:black;
+ border-radius:50%;display:flex;justify-content:center;
+ align-items:center;cursor:pointer
 }
 
-.chat {
-  padding: 10px;
-  height: 75vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-              url('chatbg.jpg') center/cover no-repeat;
-}
-
-.msg {
-  max-width: 70%;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 14px;
-}
-
-.sent {
-  background: #005c4b;
-  align-self: flex-end;
-}
-
-.received {
-  background: #202c33;
-  align-self: flex-start;
-}
-
-.msg img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-/* TYPING */
-.typing {
-  background: #202c33;
-  padding: 10px;
-  border-radius: 10px;
-  width: 60px;
-  display: flex;
-  justify-content: space-around;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  background: white;
-  border-radius: 50%;
-  animation: blink 1.4s infinite;
-}
-
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes blink {
-  0%, 80%, 100% { opacity: 0.2; }
-  40% { opacity: 1; }
-}
-
-/* VOICE */
-.voice {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.play {
-  width: 30px;
-  height: 30px;
-  background: white;
-  color: black;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-/* TICKS */
-.ticks {
-  font-size: 10px;
-  text-align: right;
-}
-
-.input {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #202c33;
-  padding: 10px;
-}
+.input{position:fixed;bottom:0;width:100%;background:#202c33;padding:10px}
 </style>
 </head>
 
 <body>
 
 <div id="lockscreen">
-  <div class="time" id="time"></div>
-  <div class="notif" onclick="openChat()">
-    <b id="namePreview"></b><br>
-    💬 New message
-  </div>
+ <div class="time" id="time"></div>
+ <div class="notif" onclick="openChat()">
+   <b id="namePreview"></b><br>💬 1 new message
+ </div>
 </div>
 
 <div id="app">
-  <div class="header">
-    <img id="dp" class="dp">
-    <div>
-      <div id="name"></div>
-      <small id="status">online</small>
-    </div>
-  </div>
+ <div class="header">
+   <img id="dp" class="dp">
+   <div>
+     <div id="name"></div>
+     <small id="status">online</small>
+   </div>
+ </div>
 
-  <div class="chat" id="chat"></div>
-  <div class="input">Type a message...</div>
+ <div class="chat" id="chat"></div>
+ <div class="input">Type a message...</div>
 </div>
 
-<audio id="music" loop>
-  <source src="song.mp3">
-</audio>
-
 <audio id="voiceAudio">
-  <source src="voice.mp3">
+ <source src="voice.mp3">
 </audio>
 
 <script>
 
-/* PERSONALIZE */
-let userName = "Lokiiiiiiiiii ❤️";
-let dpImage = "photo.jpg";
+/* PERSONAL */
+let userName="Lokiiiiiiiiii ❤️";
+let dpImage="photo.jpg";
 
-name.innerText = userName;
-namePreview.innerText = userName;
-dp.src = dpImage;
+name.innerText=userName;
+namePreview.innerText=userName;
+dp.src=dpImage;
 
 /* TIME */
 function updateTime(){
-  let now = new Date();
-  let h = now.getHours();
-  let m = now.getMinutes();
-  if(m<10) m="0"+m;
-  time.innerText = h + ":" + m;
+ let n=new Date();
+ let h=n.getHours(),m=n.getMinutes();
+ if(m<10)m="0"+m;
+ time.innerText=h+":"+m;
 }
-setInterval(updateTime,1000);
-updateTime();
+setInterval(updateTime,1000);updateTime();
 
 /* OPEN */
 function openChat(){
-  lockscreen.style.display="none";
-  app.style.display="block";
-  music.play();
-  startChat();
+ lockscreen.style.display="none";
+ app.style.display="block";
+ startChat();
 }
 
-/* 💬 FULL ORIGINAL CHAT */
-let messages = [
+/* 💬 CHAT WITH 3 PHOTOS */
+let messages=[
 
-{type:"received", text:"Hey 😊"},
-{type:"sent", text:"Hey da..."},
-{type:"received", text:"Enna panra?"},
-{type:"sent", text:"Onnum illa... just lying... unna dhaan nenachitu iruken ❤️"},
+{type:"sent", text:"Hey..."},
+{type:"sent", text:"Thoongitiya...?"},
+{type:"received", text:"Illa ma... sollu ❤️"},
 
-{type:"received", text:"Ayyooo really ah 😄"},
-{type:"sent", text:"Ama da... always 😌"},
+{type:"sent", text:"Inniku romba neram aachu... but suddenly unna romba miss panren..."},
+{type:"received", text:"Aww... enna aachu ma? 😌"},
 
-{type:"received", text:"Seri seri drama pannadha 😂"},
-{type:"sent", text:"Idhu drama illa... serious 😏"},
+{type:"sent", text:"Random ah namma old chats ellam paathen..."},
+{type:"sent", text:"Namma first days... epdi pesuvom nu 😭"},
 
-{type:"sent", text:"Unaku theriyuma..."},
-{type:"received", text:"Enna?"},
-
-{type:"sent", text:"Namma ipdi close aaguvom nu nenachaaye illa"},
-{type:"received", text:"Same here... but I like this ❤️"},
-
-{type:"sent", text:"Look at this..."},
+/* 📸 PHOTO 1 */
 {type:"sent", img:"photo1.jpg"},
-{type:"sent", text:"Indha moment... romba special 🥺"},
 
-{type:"received", text:"I remember this day..."},
-{type:"received", text:"Appove nee enaku romba pidichirundha ❤️"},
+{type:"received", text:"Haha... adhula nee romba innocent ah irundha 😂❤️"},
 
-{type:"sent", text:"Appove ah? 😏"},
-{type:"received", text:"Shut up 😂"},
+{type:"sent", text:"But seriously... those days romba azhaga irundhudhu..."},
+{type:"received", text:"Ippo illa nu sollriya? 😏"},
 
-{type:"sent", text:"But seri..."},
-{type:"sent", text:"Indha day la irundhu ippo varaikum..."},
-{type:"sent", text:"Nee enaku romba important aayita"},
+{type:"sent", text:"Ippo better dhaan... but konjam complicated..."},
+{type:"received", text:"Hmm... adhuvum namma dhaan manage pannuvom ❤️"},
 
-{type:"received", text:"Nee enaku important illa nu yosichiya? ❤️"},
-
-{type:"sent", text:"Sometimes... naan proper ah show panna maaten..."},
-{type:"received", text:"I know..."},
-
-{type:"sent", text:"But I really care about you da"},
-{type:"received", text:"Adhu enaku theriyum 🥺"},
-
-{type:"sent", text:"Still... konjam bayam irukum..."},
-{type:"received", text:"Bayam ah? enna bayam?"},
+{type:"sent", text:"Naan sollala... but sometimes bayama irukum..."},
+{type:"received", text:"Enna bayam ma?"},
 
 {type:"sent", text:"Nee oru naal enna vittu poiduva nu..."},
-{type:"sent", text:"Even when nee sollra 'I won’t leave'..."},
+{type:"sent", text:"Fight aana odane nee 'separate' nu solradhu... adhu romba hurt aagudhu..."},
 
-{type:"received", text:"Hey loosu..."},
-{type:"received", text:"Naan enga pogaren ❤️"},
+/* 📸 PHOTO 2 */
+{type:"sent", img:"photo2.jpg"},
 
-{type:"received", img:"photo2.jpg"},
-{type:"received", text:"Paathu sollu... naan un kitta ipdi dhaan iruken"},
+{type:"received", text:"Heyyy... naan enga pogaren? ❤️"},
+{type:"received", text:"Kovathula pesuven... but adhu heart la illa ma..."},
 
-{type:"sent", text:"Appo fight aagumbodhu 'let’s separate' nu solluva enna..."},
-{type:"sent", text:"Adhu romba hurt aagudhu..."},
+{type:"received", text:"Naan epovume unna thaan choose panren ❤️"},
 
-{type:"received", text:"I know da..."},
-{type:"received", text:"Anger la solliduven... but adhu meaning illa"},
-{type:"received", text:"I always come back to you la?"},
+{type:"sent", text:"Theriyum... but andha moment la naan break aayiduven..."},
+{type:"received", text:"Sorry ma... next time careful ah iruken... promise 🤝"},
 
-{type:"sent", text:"Ama... nee thirumba varuva 🥺"},
-{type:"sent", text:"But andha moment la..."},
-{type:"sent", text:"Naan already unna lose panniten nu feel aagudhu..."},
-
-{type:"received", text:"Nee enna lose panna maata ❤️"},
-{type:"received", text:"Naan unna thaan choose panren... every time"},
-
-{type:"sent", text:"Namma ipdiye irukanum... please"},
-{type:"received", text:"Irupom da ❤️"},
-
-{type:"received", img:"photo3.jpg"},
-{type:"received", text:"Unna naan ipdi dhaan paakren... always smiling 💖"},
-
-{type:"sent", text:"Naan overthink pannuva..."},
-{type:"sent", text:"Konjam bayapaduva..."},
-{type:"sent", text:"But naan namma relationship la tired aaga maaten"},
-
+{type:"sent", text:"Naan overthink panniduven..."},
 {type:"received", text:"Adhaan naan unna love panren ❤️"},
 
-{type:"received", text:"Namma perfect illa..."},
-{type:"received", text:"But namma real"},
+{type:"sent", text:"Nee enaku romba important... seriously..."},
 
-{type:"sent", text:"Namma fight pannuvom..."},
-{type:"received", text:"But fix pannuvom"},
+/* 📸 PHOTO 3 */
+{type:"sent", img:"photo3.jpg"},
 
-{type:"sent", text:"Misunderstand pannuvom..."},
-{type:"received", text:"But thirumba seruvom"},
+{type:"received", text:"Nee enaku life ma... idhu marakkadha 🥺"},
 
-{type:"sent", text:"Hurt aaguvom..."},
-{type:"received", text:"But leave panna maatom ❤️"},
+{type:"sent", text:"Namma ipdiye irukanum... please..."},
+{type:"received", text:"Irupom... edhu nadandhalum ❤️"},
 
 {type:"sent", text:"Promise?"},
+{type:"received", text:"Promise 🤝 naan unna vida maaten"},
 
-{type:"received", text:"Promise 🤝"},
-{type:"received", text:"Edhu nadandhalum..."},
+{type:"sent", text:"I love you..."},
+{type:"received", text:"I love you more ❤️"},
 
-{type:"received", text:"Naan unna vida maaten"},
-{type:"sent", text:"Naanum ❤️"},
+{type:"sent", text:"One last thing..."},
+{type:"received", text:"Enna ma?"},
 
-{type:"sent", text:"Naan konjam trust improve pannuren..."},
-{type:"received", text:"Naanum unna hurt panna try pannama iruken..."},
+/* 🎙️ VOICE NOTE */
+{type:"sent", voice:true},
 
-{type:"received", text:"Deal ah?"},
-{type:"sent", text:"Deal ❤️"},
+{type:"received", text:"Heard it..."},
+{type:"received", text:"Idhellam yosikaadha... naan unna vida maaten... ever ❤️"},
 
-{type:"received", text:"And one more thing..."},
-{type:"sent", text:"Enna?"},
-
-{type:"received", voice:true},
-
-{type:"received", text:"Edhu nadandhalum..."},
-{type:"received", text:"Naan unna thaan choose panren ❤️"},
-
-{type:"sent", text:"I LOVE YOU 💖"},
-{type:"received", text:"I LOVE YOU FOREVER ❤️"}
+{type:"sent", text:"Okay... ippo konjam better ah feel aagudhu..."},
+{type:"received", text:"Good girl 😌 sleep peacefully now ❤️"}
 
 ];
 
-let i=0;
-let chat=document.getElementById("chat");
+let i=0,chat=document.getElementById("chat");
 
-/* TYPING */
-function showTyping(callback){
-  let t=document.createElement("div");
-  t.className="typing";
-  t.innerHTML=`<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
-  chat.appendChild(t);
-  status.innerText="typing...";
+/* typing */
+function showTyping(cb){
+ let t=document.createElement("div");
+ t.className="typing";
+ t.innerHTML=`<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
+ chat.appendChild(t);
+ status.innerText="typing...";
 
-  setTimeout(()=>{
-    t.remove();
-    status.innerText="online";
-    callback();
-  },1500);
+ setTimeout(()=>{
+  t.remove();
+  status.innerText="online";
+  cb();
+ },1500);
 }
 
-/* MESSAGE */
+/* ticks */
+function addTicks(div){
+ let t=document.createElement("div");
+ t.className="ticks";
+ t.innerText="✔";
+ div.appendChild(t);
+
+ setTimeout(()=>{t.innerText="✔✔"},800);
+ setTimeout(()=>{t.classList.add("blue")},1600);
+}
+
+/* show message */
 function showMessage(){
-  if(i>=messages.length) return;
+ if(i>=messages.length)return;
+ let m=messages[i];
 
-  let m=messages[i];
+ showTyping(()=>{
+  let d=document.createElement("div");
+  d.className="msg "+m.type;
 
-  showTyping(()=>{
-    let div=document.createElement("div");
-    div.className="msg "+m.type;
+  if(m.text)d.innerText=m.text;
 
-    if(m.text) div.innerText=m.text;
+  if(m.img){
+   let img=document.createElement("img");
+   img.src=m.img;
+   d.appendChild(img);
+  }
 
-    if(m.img){
-      let img=document.createElement("img");
-      img.src=m.img;
-      div.appendChild(img);
-    }
+  if(m.voice){
+   let btn=document.createElement("div");
+   btn.className="play";
+   btn.innerText="▶";
+   d.appendChild(btn);
 
-    if(m.voice){
-      let btn=document.createElement("div");
-      btn.className="play";
-      btn.innerText="▶";
-      div.appendChild(btn);
+   let audio=document.getElementById("voiceAudio");
+   btn.onclick=()=>{audio.paused?audio.play():audio.pause();}
+  }
 
-      let audio=document.getElementById("voiceAudio");
-      btn.onclick=()=>{
-        audio.paused?audio.play():audio.pause();
-      };
-    }
+  if(m.type==="sent") addTicks(d);
 
-    if(m.type==="sent"){
-      let t=document.createElement("div");
-      t.className="ticks";
-      t.innerText="✔✔";
-      div.appendChild(t);
-    }
+  chat.appendChild(d);
+  chat.scrollTop=chat.scrollHeight;
 
-    chat.appendChild(div);
-    chat.scrollTop=chat.scrollHeight;
-
-    i++;
-    setTimeout(showMessage,1200);
-  });
+  i++;
+  setTimeout(showMessage,1300);
+ });
 }
 
-function startChat(){
-  setTimeout(showMessage,1000);
-}
+function startChat(){setTimeout(showMessage,1000)}
 
 </script>
 
