@@ -64,6 +64,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+              url('chatbg.jpg') center/cover no-repeat;
 }
 
 .msg {
@@ -86,6 +88,32 @@ body {
 .msg img {
   width: 100%;
   border-radius: 10px;
+}
+
+/* TYPING */
+.typing {
+  background: #202c33;
+  padding: 10px;
+  border-radius: 10px;
+  width: 60px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: blink 1.4s infinite;
+}
+
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
 }
 
 /* VOICE */
@@ -125,23 +153,20 @@ body {
 
 <body>
 
-<!-- LOCK SCREEN -->
 <div id="lockscreen">
   <div class="time" id="time"></div>
-
   <div class="notif" onclick="openChat()">
     <b id="namePreview"></b><br>
     💬 New message
   </div>
 </div>
 
-<!-- CHAT -->
 <div id="app">
   <div class="header">
     <img id="dp" class="dp">
     <div>
       <div id="name"></div>
-      <small>online</small>
+      <small id="status">online</small>
     </div>
   </div>
 
@@ -149,7 +174,6 @@ body {
   <div class="input">Type a message...</div>
 </div>
 
-<!-- AUDIO -->
 <audio id="music" loop>
   <source src="song.mp3">
 </audio>
@@ -159,13 +183,14 @@ body {
 </audio>
 
 <script>
+
 /* PERSONALIZE */
 let userName = "Lokiiiiiiiiii ❤️";
 let dpImage = "photo.jpg";
 
-document.getElementById("name").innerText = userName;
-document.getElementById("namePreview").innerText = userName;
-document.getElementById("dp").src = dpImage;
+name.innerText = userName;
+namePreview.innerText = userName;
+dp.src = dpImage;
 
 /* TIME */
 function updateTime(){
@@ -173,206 +198,205 @@ function updateTime(){
   let h = now.getHours();
   let m = now.getMinutes();
   if(m<10) m="0"+m;
-  document.getElementById("time").innerText = h + ":" + m;
+  time.innerText = h + ":" + m;
 }
 setInterval(updateTime,1000);
 updateTime();
 
-/* OPEN CHAT */
+/* OPEN */
 function openChat(){
-  document.getElementById("lockscreen").style.display="none";
-  document.getElementById("app").style.display="block";
-  document.getElementById("music").play();
+  lockscreen.style.display="none";
+  app.style.display="block";
+  music.play();
   startChat();
 }
 
-/* 💬 TAMIL + ENGLISH CHAT */
+/* 💬 FULL ORIGINAL CHAT */
+let messages = [
 
+{type:"received", text:"Hey 😊"},
+{type:"sent", text:"Hey da..."},
+{type:"received", text:"Enna panra?"},
+{type:"sent", text:"Onnum illa... just lying... unna dhaan nenachitu iruken ❤️"},
+
+{type:"received", text:"Ayyooo really ah 😄"},
+{type:"sent", text:"Ama da... always 😌"},
+
+{type:"received", text:"Seri seri drama pannadha 😂"},
+{type:"sent", text:"Idhu drama illa... serious 😏"},
+
+{type:"sent", text:"Unaku theriyuma..."},
+{type:"received", text:"Enna?"},
+
+{type:"sent", text:"Namma ipdi close aaguvom nu nenachaaye illa"},
+{type:"received", text:"Same here... but I like this ❤️"},
+
+{type:"sent", text:"Look at this..."},
+{type:"sent", img:"photo1.jpg"},
+{type:"sent", text:"Indha moment... romba special 🥺"},
+
+{type:"received", text:"I remember this day..."},
+{type:"received", text:"Appove nee enaku romba pidichirundha ❤️"},
+
+{type:"sent", text:"Appove ah? 😏"},
+{type:"received", text:"Shut up 😂"},
+
+{type:"sent", text:"But seri..."},
+{type:"sent", text:"Indha day la irundhu ippo varaikum..."},
+{type:"sent", text:"Nee enaku romba important aayita"},
+
+{type:"received", text:"Nee enaku important illa nu yosichiya? ❤️"},
+
+{type:"sent", text:"Sometimes... naan proper ah show panna maaten..."},
+{type:"received", text:"I know..."},
+
+{type:"sent", text:"But I really care about you da"},
+{type:"received", text:"Adhu enaku theriyum 🥺"},
+
+{type:"sent", text:"Still... konjam bayam irukum..."},
+{type:"received", text:"Bayam ah? enna bayam?"},
+
+{type:"sent", text:"Nee oru naal enna vittu poiduva nu..."},
+{type:"sent", text:"Even when nee sollra 'I won’t leave'..."},
+
+{type:"received", text:"Hey loosu..."},
+{type:"received", text:"Naan enga pogaren ❤️"},
+
+{type:"received", img:"photo2.jpg"},
+{type:"received", text:"Paathu sollu... naan un kitta ipdi dhaan iruken"},
+
+{type:"sent", text:"Appo fight aagumbodhu 'let’s separate' nu solluva enna..."},
+{type:"sent", text:"Adhu romba hurt aagudhu..."},
+
+{type:"received", text:"I know da..."},
+{type:"received", text:"Anger la solliduven... but adhu meaning illa"},
+{type:"received", text:"I always come back to you la?"},
+
+{type:"sent", text:"Ama... nee thirumba varuva 🥺"},
+{type:"sent", text:"But andha moment la..."},
+{type:"sent", text:"Naan already unna lose panniten nu feel aagudhu..."},
+
+{type:"received", text:"Nee enna lose panna maata ❤️"},
+{type:"received", text:"Naan unna thaan choose panren... every time"},
+
+{type:"sent", text:"Namma ipdiye irukanum... please"},
+{type:"received", text:"Irupom da ❤️"},
+
+{type:"received", img:"photo3.jpg"},
+{type:"received", text:"Unna naan ipdi dhaan paakren... always smiling 💖"},
+
+{type:"sent", text:"Naan overthink pannuva..."},
+{type:"sent", text:"Konjam bayapaduva..."},
+{type:"sent", text:"But naan namma relationship la tired aaga maaten"},
+
+{type:"received", text:"Adhaan naan unna love panren ❤️"},
+
+{type:"received", text:"Namma perfect illa..."},
+{type:"received", text:"But namma real"},
+
+{type:"sent", text:"Namma fight pannuvom..."},
+{type:"received", text:"But fix pannuvom"},
+
+{type:"sent", text:"Misunderstand pannuvom..."},
+{type:"received", text:"But thirumba seruvom"},
+
+{type:"sent", text:"Hurt aaguvom..."},
+{type:"received", text:"But leave panna maatom ❤️"},
+
+{type:"sent", text:"Promise?"},
+
+{type:"received", text:"Promise 🤝"},
+{type:"received", text:"Edhu nadandhalum..."},
+
+{type:"received", text:"Naan unna vida maaten"},
+{type:"sent", text:"Naanum ❤️"},
+
+{type:"sent", text:"Naan konjam trust improve pannuren..."},
+{type:"received", text:"Naanum unna hurt panna try pannama iruken..."},
+
+{type:"received", text:"Deal ah?"},
+{type:"sent", text:"Deal ❤️"},
+
+{type:"received", text:"And one more thing..."},
+{type:"sent", text:"Enna?"},
+
+{type:"received", voice:true},
+
+{type:"received", text:"Edhu nadandhalum..."},
+{type:"received", text:"Naan unna thaan choose panren ❤️"},
+
+{type:"sent", text:"I LOVE YOU 💖"},
+{type:"received", text:"I LOVE YOU FOREVER ❤️"}
+
+];
 
 let i=0;
 let chat=document.getElementById("chat");
 
+/* TYPING */
+function showTyping(callback){
+  let t=document.createElement("div");
+  t.className="typing";
+  t.innerHTML=`<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
+  chat.appendChild(t);
+  status.innerText="typing...";
+
+  setTimeout(()=>{
+    t.remove();
+    status.innerText="online";
+    callback();
+  },1500);
+}
+
+/* MESSAGE */
 function showMessage(){
   if(i>=messages.length) return;
 
   let m=messages[i];
-  let div=document.createElement("div");
-  div.className="msg "+m.type;
 
-  if(m.text) div.innerText=m.text;
+  showTyping(()=>{
+    let div=document.createElement("div");
+    div.className="msg "+m.type;
 
-  if(m.img){
-    let img=document.createElement("img");
-    img.src=m.img;
-    div.appendChild(img);
-  }let messages = [
+    if(m.text) div.innerText=m.text;
 
-  {type:"received", text:"Hey 😊"},
-  {type:"sent", text:"Hey da..."},
-  {type:"received", text:"Enna panra?"},
-  {type:"sent", text:"Onnum illa... just lying... unna dhaan nenachitu iruken ❤️"},
+    if(m.img){
+      let img=document.createElement("img");
+      img.src=m.img;
+      div.appendChild(img);
+    }
 
-  {type:"received", text:"Ayyooo really ah 😄"},
-  {type:"sent", text:"Ama da... always 😌"},
+    if(m.voice){
+      let btn=document.createElement("div");
+      btn.className="play";
+      btn.innerText="▶";
+      div.appendChild(btn);
 
-  {type:"received", text:"Seri seri drama pannadha 😂"},
-  {type:"sent", text:"Idhu drama illa... serious 😏"},
+      let audio=document.getElementById("voiceAudio");
+      btn.onclick=()=>{
+        audio.paused?audio.play():audio.pause();
+      };
+    }
 
-  {type:"sent", text:"Unaku theriyuma..."},
-  {type:"received", text:"Enna?"},
+    if(m.type==="sent"){
+      let t=document.createElement("div");
+      t.className="ticks";
+      t.innerText="✔✔";
+      div.appendChild(t);
+    }
 
-  {type:"sent", text:"Namma ipdi close aaguvom nu nenachaaye illa"},
-  {type:"received", text:"Same here... but I like this ❤️"},
+    chat.appendChild(div);
+    chat.scrollTop=chat.scrollHeight;
 
-  {type:"sent", text:"Look at this..."},
-  {type:"sent", img:"photo1.jpg"},
-  {type:"sent", text:"Indha moment... romba special 🥺"},
-
-  {type:"received", text:"I remember this day..."},
-  {type:"received", text:"Appove nee enaku romba pidichirundha ❤️"},
-
-  {type:"sent", text:"Appove ah? 😏"},
-  {type:"received", text:"Shut up 😂"},
-
-  {type:"sent", text:"But seri..."},
-  {type:"sent", text:"Indha day la irundhu ippo varaikum..."},
-  {type:"sent", text:"Nee enaku romba important aayita"},
-
-  {type:"received", text:"Nee enaku important illa nu yosichiya? ❤️"},
-
-  {type:"sent", text:"Sometimes... naan proper ah show panna maaten..."},
-  {type:"received", text:"I know..."},
-
-  {type:"sent", text:"But I really care about you da"},
-  {type:"received", text:"Adhu enaku theriyum 🥺"},
-
-  {type:"sent", text:"Still... konjam bayam irukum..."},
-  {type:"received", text:"Bayam ah? enna bayam?"},
-
-  {type:"sent", text:"Nee oru naal enna vittu poiduva nu..."},
-  {type:"sent", text:"Even when nee sollra 'I won’t leave'..."},
-
-  {type:"received", text:"Hey loosu..."},
-  {type:"received", text:"Naan enga pogaren ❤️"},
-
-  {type:"received", img:"photo2.jpg"},
-  {type:"received", text:"Paathu sollu... naan un kitta ipdi dhaan iruken"},
-
-  {type:"sent", text:"Appo fight aagumbodhu 'let’s separate' nu solluva enna..."},
-  {type:"sent", text:"Adhu romba hurt aagudhu..."},
-
-  {type:"received", text:"I know da..."},
-  {type:"received", text:"Anger la solliduven... but adhu meaning illa"},
-  {type:"received", text:"I always come back to you la?"},
-
-  {type:"sent", text:"Ama... nee thirumba varuva 🥺"},
-  {type:"sent", text:"But andha moment la..."},
-  {type:"sent", text:"Naan already unna lose panniten nu feel aagudhu..."},
-
-  {type:"received", text:"Nee enna lose panna maata ❤️"},
-  {type:"received", text:"Naan unna thaan choose panren... every time"},
-
-  {type:"sent", text:"Namma ipdiye irukanum... please"},
-  {type:"received", text:"Irupom da ❤️"},
-
-  {type:"received", img:"photo3.jpg"},
-  {type:"received", text:"Unna naan ipdi dhaan paakren... always smiling 💖"},
-
-  {type:"sent", text:"Naan overthink pannuva..."},
-  {type:"sent", text:"Konjam bayapaduva..."},
-  {type:"sent", text:"But naan namma relationship la tired aaga maaten"},
-
-  {type:"received", text:"Adhaan naan unna love panren ❤️"},
-
-  {type:"received", text:"Namma perfect illa..."},
-  {type:"received", text:"But namma real"},
-
-  {type:"sent", text:"Namma fight pannuvom..."},
-  {type:"received", text:"But fix pannuvom"},
-
-  {type:"sent", text:"Misunderstand pannuvom..."},
-  {type:"received", text:"But thirumba seruvom"},
-
-  {type:"sent", text:"Hurt aaguvom..."},
-  {type:"received", text:"But leave panna maatom ❤️"},
-
-  {type:"sent", text:"Promise?"},
-
-  {type:"received", text:"Promise 🤝"},
-  {type:"received", text:"Edhu nadandhalum..."},
-
-  {type:"received", text:"Naan unna vida maaten"},
-  {type:"sent", text:"Naanum ❤️"},
-
-  {type:"sent", text:"Naan konjam trust improve pannuren..."},
-  {type:"received", text:"Naanum unna hurt panna try pannama iruken..."},
-
-  {type:"received", text:"Deal ah?"},
-  {type:"sent", text:"Deal ❤️"},
-
-  {type:"received", text:"And one more thing..."},
-  {type:"sent", text:"Enna?"},
-
-  /* 🎙️ VOICE */
-  {type:"received", voice:true},
-
-  {type:"received", text:"Edhu nadandhalum..."},
-  {type:"received", text:"Naan unna thaan choose panren ❤️"},
-
-  {type:"sent", text:"I LOVE YOU 💖"},
-  {type:"received", text:"I LOVE YOU FOREVER ❤️"}
-
-];
-
-  if(m.voice){
-    let voiceDiv = document.createElement("div");
-    voiceDiv.className = "voice";
-
-    let playBtn = document.createElement("div");
-    playBtn.className = "play";
-    playBtn.innerText = "▶";
-
-    let duration = document.createElement("div");
-    duration.innerText = "0:08";
-
-    voiceDiv.appendChild(playBtn);
-    voiceDiv.appendChild(duration);
-    div.appendChild(voiceDiv);
-
-    let audio = document.getElementById("voiceAudio");
-
-    playBtn.onclick = () => {
-      if(audio.paused){
-        audio.play();
-        playBtn.innerText = "⏸";
-      } else {
-        audio.pause();
-        playBtn.innerText = "▶";
-      }
-    };
-
-    audio.onended = () => {
-      playBtn.innerText = "▶";
-    };
-  }
-
-  if(m.type==="sent"){
-    let t=document.createElement("div");
-    t.className="ticks";
-    t.innerText="✔✔";
-    div.appendChild(t);
-  }
-
-  chat.appendChild(div);
-  chat.scrollTop=chat.scrollHeight;
-
-  i++;
-  setTimeout(showMessage,1500);
+    i++;
+    setTimeout(showMessage,1200);
+  });
 }
 
 function startChat(){
   setTimeout(showMessage,1000);
 }
+
 </script>
 
 </body>
