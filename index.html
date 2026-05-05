@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lokii ❤️</title>
+
+<style>
+body { margin:0; font-family:sans-serif; background:black; }
+
+/* LOCK */
+.lock {
+    background:url('lock.jpg') center/cover;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+}
+
+.notif {
+    background:rgba(255,255,255,0.9);
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:20px;
+    width:80%;
+}
+
+.unlock {
+    background:white;
+    padding:10px 20px;
+    border-radius:20px;
+}
+
+/* CHAT */
+.chat { display:none; height:100vh; background:url('chatbg.jpg') center/cover; }
+
+.header {
+    background:#075e54;
+    color:white;
+    padding:10px;
+    display:flex;
+    align-items:center;
+}
+
+.dp { width:40px;height:40px;border-radius:50%;margin-right:10px; }
+
+.status { font-size:11px;color:#ddd; }
+
+.chatbox {
+    padding:10px;
+    height:calc(100vh - 60px);
+    overflow:auto;
+}
+
+.msg {
+    max-width:70%;
+    padding:10px;
+    border-radius:10px;
+    margin:6px 0;
+    font-size:14px;
+}
+
+.sent { background:#dcf8c6; margin-left:auto; }
+.received { background:white; }
+
+.time {
+    font-size:10px;
+    text-align:right;
+}
+
+.typing::after {
+    content:'...';
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%{opacity:0;}
+    50%{opacity:1;}
+    100%{opacity:0;}
+}
+
+.chat-img {
+    width:200px;
+    border-radius:10px;
+    margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+<div class="lock" onclick="openChat()">
+    <div class="notif">
+        💬 Lokii ❤️: "Hey Kirthiii... miss you..."
+    </div>
+    <div class="unlock">Tap to Unlock 🔓</div>
+</div>
+
+<!-- CHAT -->
+<div class="chat" id="chat">
+
+<div class="header">
+    <img src="dp.jpg" class="dp">
+    <div>
+        <div>Lokii ❤️</div>
+        <div class="status" id="status">last seen today at 10:28 pm</div>
+    </div>
+</div>
+
+<div class="chatbox" id="box"></div>
+
+</div>
+
+<audio id="song" src="song.mp3" loop></audio>
+
+<script>
+
+function openChat(){
+    document.querySelector(".lock").style.display="none";
+    document.querySelector(".chat").style.display="block";
+    document.getElementById("song").play();
+    start();
+}
+
+/* 💬 LONG CHAT */
+const chat = [
+
+{t:"sent",msg:"Hey Lokii... ❤️"},
+{t:"received",msg:"Heyyy Kirthiii... enna pannitu iruka da ❤️"},
+{t:"sent",msg:"Nothing... just lying down... but mind full ah nee dhaan 😔"},
+{t:"received",msg:"Aww enna aachu ma... something bothering you ah?"},
+{t:"sent",msg:"Konjam... I was going through our old photos..."},
+{t:"sent",msg:"This one 🥺",img:"photo1.jpg"},
+
+{t:"received",msg:"Aiyo 😭 this day... I remember everything da"},
+{t:"received",msg:"Nee appo romba happy ah irundha... smile ah paatha odane love aayiten ❤️"},
+
+{t:"sent",msg:"That day dhaan Lokii... I felt safe with you..."},
+{t:"sent",msg:"Like finally someone is mine nu..."},
+{t:"received",msg:"And you are mine da... always ❤️"},
+
+{t:"sent",msg:"But sometimes... enaku bayama iruku 😔"},
+{t:"received",msg:"Enna bayam ma... sollu properly"},
+
+{t:"sent",msg:"I don’t know... sudden ah feel varum..."},
+{t:"sent",msg:"Like what if one day everything changes..."},
+{t:"sent",msg:"What if you stop loving me the same way 💔"},
+
+{t:"received",msg:"Heyyyy 😢 apdi yosika koodadhu"},
+{t:"received",msg:"Naan unna love panradhu change aagave aagathu"},
+
+{t:"sent",msg:"But fights la nee pesura words... romba hurt aagudhu Lokii..."},
+{t:"sent",msg:"Especially when you say ‘we can separate’ 😭"},
+
+{t:"received",msg:"I know da... I’m really sorry for that"},
+{t:"received",msg:"Adhu kovathula dhaan... but I know it hurts you"},
+
+{t:"sent",msg:"Adhu dhaan... even after fight mudinjiduchu naalum..."},
+{t:"sent",msg:"My mind still stays there 😔"},
+
+{t:"received",msg:"Okay listen... from now naan apdi pesave maaten"},
+{t:"received",msg:"Unaku bayam vara maaten ❤️"},
+
+{t:"sent",msg:"Promise pannuva?"},
+{t:"received",msg:"Promise ❤️ no matter what happens... I’ll stay"},
+
+{t:"sent",msg:"Then naanum promise... I won’t give up on us 😭❤️"},
+{t:"received",msg:"That’s all I want da... nee irundha pothum"},
+
+{t:"sent",msg:"Sometimes I overthink too much la...?"},
+{t:"received",msg:"Konjam 😅 but it’s okay... because you care"},
+
+{t:"sent",msg:"I just don’t want to lose you Lokii... seriously 😔"},
+{t:"received",msg:"You won’t... naan iruken la ❤️"},
+
+{t:"sent",msg:"Look at this 🥺",img:"photo2.jpg"},
+{t:"received",msg:"And we’ll be like that again... even better ❤️"},
+
+{t:"sent",msg:"Sometimes I feel like I’m too much..."},
+{t:"received",msg:"You are not ‘too much’... you are mine ❤️"},
+
+{t:"sent",msg:"Say it again 😭"},
+{t:"received",msg:"I’m not going anywhere ❤️"},
+{t:"received",msg:"Always us ❤️"},
+
+{t:"sent",msg:"Okay now I feel little better 🥺"},
+{t:"received",msg:"Good girl ❤️"},
+
+{t:"sent",msg:"No matter what happens... please don’t leave me... ever..."},
+{t:"received",msg:"Never ❤️ even if things get hard... I’ll stay"},
+
+{t:"sent",msg:"Then I’ll stay too... forever ❤️",img:"photo3.jpg"},
+
+{t:"received",msg:"You’re my home Kirthiii 🥺"},
+{t:"received",msg:"I love you endlessly ❤️"},
+
+{t:"sent",msg:"I love you more than my fears... more than everything ❤️"},
+
+{t:"voice"}
+
+];
+
+let i=0;
+
+function setStatus(s){
+    document.getElementById("status").innerText=s;
+}
+
+function start(){
+    next();
+}
+
+function next(){
+    if(i>=chat.length) return;
+
+    if(chat[i].t==="received"){
+        setStatus("online...");
+        showTyping(()=>{
+            add(chat[i]);
+            setStatus("last seen just now");
+            i++;
+            setTimeout(next,1600);
+        });
+    } else {
+        add(chat[i]);
+        i++;
+        setTimeout(next,1400);
+    }
+}
+
+function showTyping(cb){
+    let box=document.getElementById("box");
+    let t=document.createElement("div");
+    t.className="typing";
+    t.innerText="Lokii is typing";
+    box.appendChild(t);
+
+    setTimeout(()=>{
+        t.remove();
+        cb();
+    },1500);
+}
+
+function add(data){
+    let box=document.getElementById("box");
+
+    let d=document.createElement("div");
+    d.className="msg "+data.t;
+
+    d.innerHTML=data.msg || "";
+
+    if(data.img){
+        d.innerHTML+=`<br><img src="${data.img}" class="chat-img">`;
+    }
+
+    if(data.t==="sent"){
+        let id="tick"+i;
+        d.innerHTML+=`<div class="time">10:30 <span id="${id}">✓</span></div>`;
+
+        setTimeout(()=>{document.getElementById(id).innerText="✓✓";},800);
+        setTimeout(()=>{document.getElementById(id).style.color="blue";},1600);
+    }
+
+    if(data.t==="received"){
+        d.innerHTML+=`<div class="time">10:31</div>`;
+    }
+
+    if(data.t==="voice"){
+        d.className="msg sent";
+        d.innerHTML=`
+        🎤 Voice Note ❤️<br>
+        <button onclick="playVoice()">▶ Play</button>
+        <audio id="voice" src="voice.mp3"></audio>`;
+    }
+
+    box.appendChild(d);
+    box.scrollTop=box.scrollHeight;
+}
+
+function playVoice(){
+    document.getElementById("voice").play();
+}
+
+</script>
+
+</body>
+</html>
