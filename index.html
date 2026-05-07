@@ -6,10 +6,14 @@
 <title>Lokii ❤️</title>
 
 <style>
-body { margin:0; font-family:sans-serif; background:black; }
+body {
+    margin:0;
+    font-family:sans-serif;
+    background:black;
+}
 
 /* LOCK */
-.lock {
+.lock{
     background:url('lock.jpg') center/cover;
     height:100vh;
     display:flex;
@@ -18,7 +22,7 @@ body { margin:0; font-family:sans-serif; background:black; }
     flex-direction:column;
 }
 
-.notif {
+.notif{
     background:rgba(255,255,255,0.9);
     padding:10px;
     border-radius:10px;
@@ -26,16 +30,20 @@ body { margin:0; font-family:sans-serif; background:black; }
     width:80%;
 }
 
-.unlock {
+.unlock{
     background:white;
     padding:10px 20px;
     border-radius:20px;
 }
 
 /* CHAT */
-.chat { display:none; height:100vh; background:url('chatbg.jpg') center/cover; }
+.chat{
+    display:none;
+    height:100vh;
+    background:url('chatbg.jpg') center/cover;
+}
 
-.header {
+.header{
     background:#075e54;
     color:white;
     padding:10px;
@@ -43,17 +51,25 @@ body { margin:0; font-family:sans-serif; background:black; }
     align-items:center;
 }
 
-.dp { width:40px;height:40px;border-radius:50%;margin-right:10px; }
+.dp{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    margin-right:10px;
+}
 
-.status { font-size:11px;color:#ddd; }
+.status{
+    font-size:11px;
+    color:#ddd;
+}
 
-.chatbox {
+.chatbox{
     padding:10px;
     height:calc(100vh - 60px);
     overflow:auto;
 }
 
-.msg {
+.msg{
     max-width:70%;
     padding:10px;
     border-radius:10px;
@@ -61,26 +77,32 @@ body { margin:0; font-family:sans-serif; background:black; }
     font-size:14px;
 }
 
-.sent { background:#dcf8c6; margin-left:auto; }
-.received { background:white; }
+.sent{
+    background:#dcf8c6;
+    margin-left:auto;
+}
 
-.time {
+.received{
+    background:white;
+}
+
+.time{
     font-size:10px;
     text-align:right;
 }
 
-.typing::after {
+.typing::after{
     content:'...';
     animation: blink 1s infinite;
 }
 
-@keyframes blink {
+@keyframes blink{
     0%{opacity:0;}
     50%{opacity:1;}
     100%{opacity:0;}
 }
 
-.chat-img {
+.chat-img{
     width:200px;
     border-radius:10px;
     margin-top:5px;
@@ -95,7 +117,10 @@ body { margin:0; font-family:sans-serif; background:black; }
     <div class="notif">
         💬 Lokii ❤️: "Hey Kirthiii... miss you..."
     </div>
-    <div class="unlock">Tap to Unlock 🔓</div>
+
+    <div class="unlock">
+        Tap to Unlock 🔓
+    </div>
 </div>
 
 <!-- CHAT -->
@@ -103,9 +128,12 @@ body { margin:0; font-family:sans-serif; background:black; }
 
 <div class="header">
     <img src="dp.jpg" class="dp">
+
     <div>
         <div>Lokii ❤️</div>
-        <div class="status" id="status">last seen today at 10:28 pm</div>
+        <div class="status" id="status">
+            last seen today at 10:28 pm
+        </div>
     </div>
 </div>
 
@@ -129,8 +157,10 @@ const chat = [
 
 {t:"sent",msg:"Hey Lokii... ❤️"},
 {t:"received",msg:"Heyyy Kirthiii... enna pannitu iruka da ❤️"},
+
 {t:"sent",msg:"Nothing... just lying down... but mind full ah nee dhaan 😔"},
 {t:"received",msg:"Aww enna aachu ma... something bothering you ah?"},
+
 {t:"sent",msg:"Konjam... I was going through our old photos..."},
 {t:"sent",msg:"This one 🥺",img:"photo1.jpg"},
 
@@ -139,6 +169,7 @@ const chat = [
 
 {t:"sent",msg:"That day dhaan Lokii... I felt safe with you..."},
 {t:"sent",msg:"Like finally someone is mine nu..."},
+
 {t:"received",msg:"And you are mine da... always ❤️"},
 
 {t:"sent",msg:"But sometimes... enaku bayama iruku 😔"},
@@ -196,9 +227,7 @@ const chat = [
 {t:"received",msg:"You’re my home Kirthiii 🥺"},
 {t:"received",msg:"I love you endlessly ❤️"},
 
-{t:"sent",msg:"I love you more than my fears... more than everything ❤️"},
-
-{t:"voice"}
+{t:"sent",msg:"I love you more than my fears... more than everything ❤️"}
 
 ];
 
@@ -213,17 +242,22 @@ function start(){
 }
 
 function next(){
+
     if(i>=chat.length) return;
 
     if(chat[i].t==="received"){
+
         setStatus("online...");
+
         showTyping(()=>{
             add(chat[i]);
             setStatus("last seen just now");
             i++;
             setTimeout(next,1600);
         });
-    } else {
+
+    }else{
+
         add(chat[i]);
         i++;
         setTimeout(next,1400);
@@ -231,10 +265,14 @@ function next(){
 }
 
 function showTyping(cb){
+
     let box=document.getElementById("box");
+
     let t=document.createElement("div");
+
     t.className="typing";
     t.innerText="Lokii is typing";
+
     box.appendChild(t);
 
     setTimeout(()=>{
@@ -244,9 +282,11 @@ function showTyping(cb){
 }
 
 function add(data){
+
     let box=document.getElementById("box");
 
     let d=document.createElement("div");
+
     d.className="msg "+data.t;
 
     d.innerHTML=data.msg || "";
@@ -256,31 +296,33 @@ function add(data){
     }
 
     if(data.t==="sent"){
-        let id="tick"+i;
-        d.innerHTML+=`<div class="time">10:30 <span id="${id}">✓</span></div>`;
 
-        setTimeout(()=>{document.getElementById(id).innerText="✓✓";},800);
-        setTimeout(()=>{document.getElementById(id).style.color="blue";},1600);
+        let id="tick"+i;
+
+        d.innerHTML+=`
+        <div class="time">
+            10:30 <span id="${id}">✓</span>
+        </div>`;
+
+        setTimeout(()=>{
+            document.getElementById(id).innerText="✓✓";
+        },800);
+
+        setTimeout(()=>{
+            document.getElementById(id).style.color="blue";
+        },1600);
     }
 
     if(data.t==="received"){
-        d.innerHTML+=`<div class="time">10:31</div>`;
-    }
-
-    if(data.t==="voice"){
-        d.className="msg sent";
-        d.innerHTML=`
-        🎤 Voice Note ❤️<br>
-        <button onclick="playVoice()">▶ Play</button>
-        <audio id="voice" src="voice.mp3"></audio>`;
+        d.innerHTML+=`
+        <div class="time">
+            10:31
+        </div>`;
     }
 
     box.appendChild(d);
-    box.scrollTop=box.scrollHeight;
-}
 
-function playVoice(){
-    document.getElementById("voice").play();
+    box.scrollTop=box.scrollHeight;
 }
 
 </script>
